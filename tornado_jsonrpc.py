@@ -10,6 +10,8 @@ PROTOCOL_VERSIONS = ('2.0',)
 
 
 class JSONRPCHandler(RequestHandler):  # noqa
+    def set_default_headers(self):
+        self.set_header('Content-Type', 'application/json')
 
     def initialize(self, views):  # noqa
         self.views = views  # noqa
@@ -20,13 +22,20 @@ class JSONRPCHandler(RequestHandler):  # noqa
             if not request_body:
                 raise InvalidJSON
 
-            if not (isinstance(request_body, dict) or isinstance(request_body, list)):
+            is_list = isinstance(request_body, list)
+            is_dict = isinstance(request_body, dict)
+
+            if not (is_dict or is_list):
                 raise InvalidJSON
         except (UnicodeDecodeError, json.JSONDecodeError) as exception:
-            self.write(_get_encoded_response({'id': None, 'result': None, 'error': _get_error(exception)}))
+            self.write({'id': None, 'result': None, 'error': _get_error(exception)})
             return
 
-        if isinstance(request_body, list):
+        if is_dict:
+            response = await _get_response(self, self.views, request_body)
+            if response:
+                self.write(response)
+        elif is_list:
             responses = []
 
             for i in request_body:
@@ -35,11 +44,7 @@ class JSONRPCHandler(RequestHandler):  # noqa
                     responses.append(response)
 
             if responses:
-                self.write(_get_encoded_response(responses))
-        else:
-            response = await _get_response(self, self.views, request_body)
-            if response:
-                self.write(_get_encoded_response(response))
+                self.write(json.dumps(responses).encode())
 
 
 def _get_error(exception):
@@ -48,10 +53,6 @@ def _get_error(exception):
         'message': getattr(exception, 'message', str(exc_info()[0]))[:MAX_ERROR_MESSAGE_LENGTH],
         'data': getattr(exception, 'data', None)
     }
-
-
-def _get_encoded_response(response):
-    return json.dumps(response).encode()
 
 
 async def _get_response(request, views, request_body):
