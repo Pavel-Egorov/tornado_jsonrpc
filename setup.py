@@ -4,8 +4,11 @@ from setuptools import setup
 
 
 def read(path):
-    with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), path)) as f:
-        return f.read()
+    try:
+        with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), path)) as f:
+            return f.read()
+    except:
+        return ''
 
 if __name__ == '__main__':
     setup(
@@ -13,7 +16,7 @@ if __name__ == '__main__':
         description="jsonrpc implementation for tornado",
         license="Apache",
         url="https://github.com/Pavel1996/tornado_jsonrpc",
-        version="1.0.1",
+        version="1.0.2",
         author="Pavel Egorov",
         author_email="egorov.p.ifmo@gmail.com",
         maintainer="Pavel Egorov",
