@@ -16,7 +16,7 @@ if __name__ == '__main__':
         description="jsonrpc implementation for tornado",
         license="Apache",
         url="https://github.com/Pavel1996/tornado_jsonrpc",
-        version="1.0.2",
+        version="1.0.3",
         author="Pavel Egorov",
         author_email="egorov.p.ifmo@gmail.com",
         maintainer="Pavel Egorov",

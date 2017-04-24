@@ -9,12 +9,15 @@ MAX_ERROR_MESSAGE_LENGTH = 200
 PROTOCOL_VERSIONS = ('2.0',)
 
 
-class JSONRPCHandler(RequestHandler):  # noqa
+class JSONRPCHandler(RequestHandler):
     def set_default_headers(self):
         self.set_header('Content-Type', 'application/json')
 
-    def initialize(self, views):  # noqa
-        self.views = views  # noqa
+    def set_extra_headers(self, path):
+        self.set_header('Cache-Control', 'no-store')
+
+    def initialize(self, views):
+        self.views = views
 
     async def post(self, *args, **kwargs):
         try:
