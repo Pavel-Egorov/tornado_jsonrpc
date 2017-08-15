@@ -50,6 +50,23 @@ class JSONRPCHandler(RequestHandler):
                 self.write(json.dumps(responses).encode())
 
 
+class CORSIgnoreJSONRPCHandler(JSONRPCHandler):
+    def set_default_headers(self):
+        super().set_default_headers()
+        self.set_header('Access-Control-Allow-Origin', '*')
+        self.set_header('Access-Control-Allow-Headers', 'x-requested-with, Content-Type')
+        self.set_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
+
+    def options(self):
+        pass
+
+
+class WithCredentialsJSONRPCHandler(CORSIgnoreJSONRPCHandler):
+    def set_default_headers(self):
+        super().set_default_headers()
+        self.set_header('withCredentials', 'true')
+
+
 def _get_error(exception):
     return {
         'code': getattr(exception, 'code', InternalError.code),
@@ -107,12 +124,6 @@ def _get_with_protocol_version(response, version):
     return updated_response
 
 
-class InvalidJSON(Exception):
-    code = -32700
-    message = 'Parse error'
-    data = None
-
-
 class InvalidVersion(Exception):
     code = -32600
     message = 'Invalid Request'
@@ -134,4 +145,10 @@ class InvalidParams(Exception):
 class InternalError(Exception):
     code = -32603
     message = 'Internal error'
+    data = None
+
+
+class InvalidJSON(Exception):
+    code = -32700
+    message = 'Parse error'
     data = None
