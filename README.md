@@ -30,21 +30,24 @@ It is so simple:
 
 2. And then create `tornado_app.py`, where You define tornado Application:
 
-        from tornado_jsonrpc import JSONRPCHandler       
+        from tornado_jsonrpc import JSONRPCHandler
         from tornado.ioloop import IOLoop
         from tornado.web import Application
-        
+
         from your_package import views
-        
+
         Application(
             [
                 ('/api', views.JSONRPCHandler, dict(views=views)),
             ],
         ).listen(8888)
-        
+
         IOLoop.current().start()
+
+3. You can also use CORSIgnoreJSONRPCHandler to receive requests from all sources
+or WithCredentialsJSONRPCHandler to also receive cookies with request.
 
 CONTRIBUTE
 ----------
 
-If You have found an error or want to offer some changes - create a pull request and I will review it as soon as possible!
+If You have found an error or want to offer changes - create a pull request and I will review it as soon as possible!
