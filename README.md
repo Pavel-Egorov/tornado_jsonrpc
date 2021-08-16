@@ -6,7 +6,7 @@ This implementation follow JSONRPC 2.0 specification.
 REQUIREMENTS
 ------------
 
-    python >= 3.5 (I use async/await in the package)
+    python >= 3.5 (async/await is used in the package)
 
 INSTALLATION
 ------------
@@ -50,4 +50,4 @@ or WithCredentialsJSONRPCHandler to also receive cookies with request.
 CONTRIBUTE
 ----------
 
-If You have found an error or want to offer changes - create a pull request and I will review it as soon as possible!
+If You have found an error or want to offer changes - create a pull request, and I will review it as soon as possible!

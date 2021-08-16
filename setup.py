@@ -7,8 +7,9 @@ def read(path):
     try:
         with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), path)) as f:
             return f.read()
-    except:
+    except Exception:  # noqa
         return ''
+
 
 if __name__ == '__main__':
     setup(
@@ -34,6 +35,9 @@ if __name__ == '__main__':
             'Programming Language :: Python',
             'Programming Language :: Python :: 3.5',
             'Programming Language :: Python :: 3.6',
+            'Programming Language :: Python :: 3.7',
+            'Programming Language :: Python :: 3.8',
+            'Programming Language :: Python :: 3.9',
             'Topic :: Software Development :: Libraries :: Python Modules',
         ],
         install_requires=['tornado>=4.0'],

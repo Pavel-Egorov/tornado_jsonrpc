@@ -13,13 +13,13 @@ class JSONRPCHandler(RequestHandler):
     def set_default_headers(self):
         self.set_header('Content-Type', 'application/json')
 
-    def set_extra_headers(self, path):
+    def set_extra_headers(self, path):  # noqa
         self.set_header('Cache-Control', 'no-store')
 
     def initialize(self, views):
         self.views = views
 
-    async def post(self, *args, **kwargs):
+    async def post(self, *args, **kwargs):  # noqa
         try:
             request_body = json.loads(self.request.body.decode())
             if not request_body:
